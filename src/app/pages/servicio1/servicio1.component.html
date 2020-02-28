@@ -123,8 +123,8 @@
         <strong>Resumen</strong>
       </div>
       <div class="card-body">
-        <p><b>Total a pagar:</b> {{totalPagar | number: '1.2-2'}}</p>
-        <p><b>Interés generado:</b> {{totalInteres | number: '1.2-2'}}</p>
+        <p><b>Total a pagar:</b>$ {{totalPagar | number: '1.2-2'}}</p>
+        <p><b>Interés generado:</b>$ {{totalInteres | number: '1.2-2'}}</p>
         <br>
         <button class="btn btn-primary" (click)="print()"><fa-icon [icon]='faPrint'></fa-icon> Imprimir</button>&nbsp;
         <button class="btn btn-primary" (click)="save()"><fa-icon [icon]='faSave'></fa-icon> Guardar</button>

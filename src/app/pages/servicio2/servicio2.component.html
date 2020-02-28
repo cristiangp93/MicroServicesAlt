@@ -2,6 +2,11 @@
   Consultar
   <small class="text-muted">préstamos</small>
 </h3>
+<span>Cargar desde: </span>
+<div class="btn-group" role="group">
+  <button type="button" class="btn btn-outline-primary" (click)="cloudDeploy = true; get_prestamos()">Cloud</button>
+  <button type="button" class="btn btn-outline-secondary" (click)="cloudDeploy = false; get_prestamos()">Servidor</button>
+</div>
 <div class="custom-control custom-switch">
   <input type="checkbox" class="custom-control-input" id="customSwitch2" [(ngModel)]="cloudDeploy">
   <label class="custom-control-label" for="customSwitch2">Cloud</label>

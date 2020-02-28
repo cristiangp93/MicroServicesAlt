@@ -9,7 +9,36 @@ export class S1Service {
 
   constructor( public http: HttpClient ) { }
 
-  get_query_cloud(solicitud: any) {
+  get_amortizacion(solicitud: any, cloud: boolean) {
+    let URL = '';
+    if (cloud) {
+      console.log('cloud');
+      URL = `${environment.awsURL}/amortizacion`;
+    } else {
+      console.log('server');
+      URL = `${environment.apiURL}/api/amortizacion`;
+    }
+    return this.http.get(URL, {params: {
+        capital: solicitud.monto,
+        plazo: solicitud.plazo,
+        interes: solicitud.interes,
+        amort: solicitud.amort
+      }});
+  }
+
+  save_credito(data: any, cloud: boolean) {
+    let URL = '';
+    if (cloud) {
+      console.log('cloud');
+      URL = `${environment.awsURL}/credito`;
+    } else {
+      console.log('server');
+      URL = `${environment.apiURL}/api/savecredito`;
+    }
+    return this.http.post(URL, data);
+  }
+
+  /*get_query_cloud(solicitud: any) {
     return this.http.get(`${environment.awsURL}/amortizacion`, {params: {
         capital: solicitud.monto,
         plazo: solicitud.plazo,
@@ -25,14 +54,14 @@ export class S1Service {
         interes: solicitud.interes,
         amort: solicitud.amort
       }});
-  }
+  }*/
 
-  save_credito_cloud(data: any) {
+  /*save_credito_cloud(data: any) {
     return this.http.post(`${environment.awsURL}/credito`, data);
   }
 
   save_credito_server(data: any) {
     return this.http.post(`${environment.apiURL}/api/savecredito`, data);
-  }
+  }*/
 
 }

@@ -37,46 +37,23 @@ export class Servicio1Component implements OnInit {
       text: 'Espere por favor'
     });
     Swal.showLoading();
-
-    if (this.cloudDeploy) {
-      console.log('cloud');
-      this.s1.get_query_cloud( this.solicitud )
-        .subscribe((resp: any) => {
-          Swal.close();
-          if ( resp.statusCode !== 400) {
-            this.tabla_amort = resp.body;
-            this.tabla_amort.forEach( it => {
-              this.totalInteres += it.cuota_interes;
-              this.totalPagar += it.pago_final;
-            });
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: resp.body
-            });
-          }
-        });
-    } else {
-      console.log('server');
-      this.s1.get_query_servidor( this.solicitud )
-        .subscribe( (resp: any) => {
-          Swal.close();
-          if ( resp.statusCode !== 400) {
-            this.tabla_amort = resp.body;
-            this.tabla_amort.forEach( it => {
-              this.totalInteres += it.cuota_interes;
-              this.totalPagar += it.pago_final;
-            });
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: resp.body
-            });
-          }
-        });
-    }
+    this.s1.get_amortizacion( this.solicitud, this.cloudDeploy )
+      .subscribe((resp: any) => {
+        Swal.close();
+        if ( resp.statusCode !== 400) {
+          this.tabla_amort = resp.body;
+          this.tabla_amort.forEach( it => {
+            this.totalInteres += it.cuota_interes;
+            this.totalPagar += it.pago_final;
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: resp.body
+          });
+        }
+      });
   }
 
   save() {
@@ -85,10 +62,8 @@ export class Servicio1Component implements OnInit {
       text: 'Espere por favor'
     });
     Swal.showLoading();
-
-    if ( this.cloudDeploy) {
-      console.log('cloud');
-      this.s1.save_credito_cloud( this.tabla_amort).subscribe((resp: any) => {
+    this.s1.save_credito( this.tabla_amort, this.cloudDeploy)
+      .subscribe((resp: any) => {
         Swal.close();
         if ( resp.statusCode !== 400) {
           Swal.fire({
@@ -106,27 +81,6 @@ export class Servicio1Component implements OnInit {
           });
         }
       });
-    } else {
-      console.log('server');
-      this.s1.save_credito_server( this.tabla_amort ).subscribe((resp: any) => {
-        Swal.close();
-        if ( resp.statusCode !== 400) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Ok !',
-            text: resp.body
-          });
-          this.tabla_amort = [];
-          this.solicitud = new Solicitud();
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            text: resp.body
-          });
-        }
-      });
-    }
   }
 
   print() {

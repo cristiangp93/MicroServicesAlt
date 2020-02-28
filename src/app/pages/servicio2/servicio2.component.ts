@@ -13,48 +13,28 @@ export class Servicio2Component implements OnInit {
   datos: any = [];
   selectedCredit: any = [];
   cuotas: any = [];
-  cloudDeploy = false;
+  cloudDeploy: boolean;
 
-  constructor(public s2: S2Service) {
-    this.get_prestamos();
-  }
+  constructor(public s2: S2Service) { }
 
   ngOnInit(): void {
   }
 
   get_prestamos() {
     this.loading = true;
-    if ( this.cloudDeploy ) {
-      console.log('cloud');
-      this.s2.get_creditos_cloud()
-        .subscribe((resp: any) => {
-          this.loading = false;
-          if ( resp.statusCode !== 400) {
-            this.datos = resp.body;
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: resp.body
-            });
-          }
-        });
-    } else {
-      console.log('server');
-      this.s2.get_creditos_server()
-        .subscribe((resp: any) => {
-          this.loading = false;
-          if ( resp.statusCode !== 400) {
-            this.datos = resp.body;
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: resp.body
-            });
-          }
-        });
-    }
+    this.s2.get_creditos( this.cloudDeploy )
+      .subscribe((resp: any) => {
+        this.loading = false;
+        if ( resp.statusCode !== 400) {
+          this.datos = resp.body;
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: resp.body
+          });
+        }
+      });
   }
 
   pagar_cuota(cuotaIdx: number ) {
@@ -63,53 +43,27 @@ export class Servicio2Component implements OnInit {
       text: 'Espere por favor'
     });
     Swal.showLoading();
-    if ( this.cloudDeploy ) {
-      console.log('cloud');
-      this.s2.pagar_cuota_cloud({amort: this.selectedCredit, cuotaIdx})
-        .subscribe((resp: any) => {
-          Swal.close();
-          if ( resp.statusCode !== 400) {
-            Swal.fire({
-              icon: 'success',
-              title: 'Ok !',
-              text: resp.body
-            }).then(() => {
-              this.selectedCredit = [];
-              this.cuotas = [];
-              this.get_prestamos();
-            });
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: resp.body
-            });
-          }
-        });
-    } else {
-      console.log('server');
-      this.s2.pagar_cuota_server({amort: this.selectedCredit, cuotaIdx})
-        .subscribe((resp: any) => {
-          Swal.close();
-          if ( resp.statusCode !== 400) {
-            Swal.fire({
-              icon: 'success',
-              title: 'Ok !',
-              text: resp.body
-            }).then(() => {
-              this.selectedCredit = [];
-              this.cuotas = [];
-              this.get_prestamos();
-            });
-          } else {
-            Swal.fire({
-              icon: 'error',
-              title: 'Oops...',
-              text: resp.body
-            });
-          }
-        });
-    }
+    this.s2.pagar_cuota({amort: this.selectedCredit, cuotaIdx}, this.cloudDeploy)
+      .subscribe((resp: any) => {
+        Swal.close();
+        if ( resp.statusCode !== 400) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Ok !',
+            text: resp.body
+          }).then(() => {
+            this.selectedCredit = [];
+            this.cuotas = [];
+            this.get_prestamos();
+          });
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: resp.body
+          });
+        }
+      });
   }
 
 }
