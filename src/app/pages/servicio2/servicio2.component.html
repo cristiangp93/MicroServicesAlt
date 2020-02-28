@@ -1,1 +1,73 @@
-<p>servicio2 works!</p>
+<h3>
+  Consultar
+  <small class="text-muted">préstamos</small>
+</h3>
+<div class="custom-control custom-switch">
+  <input type="checkbox" class="custom-control-input" id="customSwitch2" [(ngModel)]="cloudDeploy">
+  <label class="custom-control-label" for="customSwitch2">Cloud</label>
+</div>
+<hr>
+
+<div *ngIf="loading">
+  <h1>Cargando...</h1>
+</div>
+
+<div class="jumbotron jumbotron-fluid" *ngIf="datos.length === 0 && !loading">
+  <div class="container">
+    <h1 class="display-4 text-center text-uppercase">No existen datos de créditos</h1>
+    <p class="lead text-justify">
+      Por favor, ingrese nuevos datos desde la pestaña de <a routerLink="/servicio1">Servicio 1 </a>
+    </p>
+  </div>
+</div>
+
+<div class="row" *ngIf="datos.length > 0 && !loading">
+  <div class="col-5 listado">
+    <ul class="list-group">
+      <li class="list-group-item"
+          *ngFor="let dato of datos"
+          (click)="cuotas = dato.cuotas; selectedCredit = dato">
+        <b>Id: {{dato.id}}</b><br>
+        <b>Fecha: </b> {{dato.fecha}}<br>
+        <b>Nro Cuotas: </b> {{dato.cuotas.length}}<br>
+        <p class="card-text">
+          <span class="badge badge-pill badge-success" *ngIf="dato.pagado">Pagado</span>
+          <span class="badge badge-pill badge-danger" *ngIf="!dato.pagado">No pagado</span>
+        </p>
+      </li>
+    </ul>
+  </div>
+  <div class="col-7" *ngIf="cuotas.length > 0">
+    <table class="table table-bordered table-striped table-sm">
+      <thead class="thead-dark">
+      <tr class="text-black-50">
+        <th class="text-center">Capital inicio</th>
+        <th class="text-center">Fijo Capital</th>
+        <th class="text-center">Interes</th>
+        <th class="text-center">Cuota</th>
+        <th class="text-center">Estado</th>
+        <th class="text-center">Acción</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let cuota of cuotas; let idx = index">
+        <td>$ {{cuota.capital | number:'1.2-2'}}</td>
+        <td>$ {{cuota.cuota_capital | number:'1.2-2'}}</td>
+        <td>$ {{cuota.cuota_interes | number:'1.2-2'}}</td>
+        <td>$ {{cuota.pago_final | number:'1.2-2'}}</td>
+        <td>
+          <span class="badge badge-pill badge-success" *ngIf="cuota.pagado">Pagado</span>
+          <span class="badge badge-pill badge-danger" *ngIf="!cuota.pagado">No pagado</span>
+        </td>
+        <td>
+          <button class="btn btn-outline-primary btn-sm"
+                  [disabled]="cuota.pagado"
+                  (click)="pagar_cuota( idx )">
+            Pagar
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
