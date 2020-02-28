@@ -1,0 +1,135 @@
+<h3>
+  Generar
+  <small class="text-muted">tabla de amortización</small>
+</h3>
+<hr>
+
+<div class="row">
+  <!-- Solicitud de crédito -->
+  <div class="col-sm-12 col-md-6">
+    <div class="card">
+      <div class="card-header">
+        <strong>Información del </strong>
+        <small>crédito</small>
+        <div class="custom-control custom-switch">
+          <input type="checkbox" class="custom-control-input" id="customSwitch1" [(ngModel)]="cloudDeploy">
+          <label class="custom-control-label" for="customSwitch1">Cloud</label>
+        </div>
+      </div>
+      <div class="card-body">
+        <form (ngSubmit)="calc_cred( fC )" #fC="ngForm">
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label>Cantidad ($)</label>
+                <input class="form-control"
+                       type="number"
+                       name="monto"
+                       [(ngModel)]="solicitud.monto"
+                       required
+                       placeholder="$00000">
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label>Tipo Crédito</label>
+                <select class="form-control" name="interes" [(ngModel)]="solicitud.interes">
+                  <option value="15">Consumo</option>
+                  <option value="10.44">Vivienda</option>
+                  <option value="17">MicroEmpresarial</option>
+                  <option value="10.99">Comercial</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <div class="form-group">
+                <label>Plazo</label>
+                <select class="form-control" name="plazo" [(ngModel)]="solicitud.plazo">
+                  <option value="12">12 Meses</option>
+                  <option value="24">24 Meses</option>
+                  <option value="36">36 Meses</option>
+                  <option value="48">48 Meses</option>
+                  <option value="60">60 Meses</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="form-group">
+                <label>Tipo</label>
+                <select class="form-control" name="tipo" [(ngModel)]="solicitud.amort">
+                  <option value="GER">Alemana</option>
+                  <option value="FR">Francesa</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <button [disabled]="!fC.valid" class="btn btn-primary" type="submit">
+            <fa-icon [icon]='faSearch'></fa-icon> Generar
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+  <!-- !Solicitud de crédito -->
+  <!-- Detalles del crédito -->
+  <div class="col-sm-12 col-md-6" *ngIf="tabla_amort.length > 0">
+    <div class="card">
+      <div class="card-header">
+        <strong>Detalles del </strong>
+        <small>crédito</small>
+      </div>
+      <div class="card-body">
+        <p><b>Monto solicitado: </b>$ {{solicitud.monto}}.00</p>
+        <p><b>Plazo (meses): </b>{{solicitud.plazo}} meses</p>
+        <p><b>Interes (anual): </b> {{solicitud.interes}}%</p>
+        <p><b>Tipo de amortización: </b>{{solicitud.amort}}</p>
+      </div>
+    </div>
+  </div>
+  <!-- !Detalles del crédito -->
+</div>
+<hr>
+<!-- Tabla de amortización -->
+<div class="row" *ngIf="tabla_amort.length > 0">
+  <div class="col-8">
+    <div id="print-div">
+      <h3 class="text-center">Tabla de amortización</h3>
+      <table class="table table-bordered table-striped table-sm">
+        <thead class="thead-dark">
+        <tr class="text-black-50">
+          <th class="text-center">Capital inicio</th>
+          <th class="text-center">Fijo Capital</th>
+          <th class="text-center">Interes</th>
+          <th class="text-center">Cuota</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let amort of tabla_amort">
+          <td>$ {{amort.capital | number:'1.2-2'}}</td>
+          <td>$ {{amort.cuota_capital | number:'1.2-2'}}</td>
+          <td>$ {{amort.cuota_interes | number:'1.2-2'}}</td>
+          <td>$ {{amort.pago_final | number:'1.2-2'}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="col-4">
+    <div class="card">
+      <div class="card-header">
+        <strong>Resumen</strong>
+      </div>
+      <div class="card-body">
+        <p><b>Total a pagar:</b> {{totalPagar | number: '1.2-2'}}</p>
+        <p><b>Interés generado:</b> {{totalInteres | number: '1.2-2'}}</p>
+        <br>
+        <button class="btn btn-primary" (click)="print()"><fa-icon [icon]='faPrint'></fa-icon> Imprimir</button>&nbsp;
+        <button class="btn btn-primary" (click)="save()"><fa-icon [icon]='faSave'></fa-icon> Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- !Tabla de amortización -->
