@@ -53,6 +53,13 @@ export class Servicio1Component implements OnInit {
             text: resp.body
           });
         }
+      }, error => {
+        Swal.close();
+        Swal.fire({
+          icon: 'error',
+          title: error.name,
+          text: error.message
+        });
       });
   }
 
@@ -80,6 +87,13 @@ export class Servicio1Component implements OnInit {
             text: resp.body
           });
         }
+      }, error => {
+        Swal.close();
+        Swal.fire({
+          icon: 'error',
+          title: error.name,
+          text: error.message
+        });
       });
   }
 

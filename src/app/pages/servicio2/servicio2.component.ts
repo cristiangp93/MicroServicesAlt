@@ -34,6 +34,12 @@ export class Servicio2Component implements OnInit {
             text: resp.body
           });
         }
+      }, error => {
+        Swal.fire({
+          icon: 'error',
+          title: error.name,
+          text: error.message
+        });
       });
   }
 
@@ -63,6 +69,12 @@ export class Servicio2Component implements OnInit {
             text: resp.body
           });
         }
+      }, error => {
+        Swal.fire({
+          icon: 'error',
+          title: error.name,
+          text: error.message
+        });
       });
   }
 

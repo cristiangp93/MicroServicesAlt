@@ -7,18 +7,19 @@ import {environment} from '../../environments/environment';
 })
 export class S1Service {
 
+  URL = '';
+
   constructor( public http: HttpClient ) { }
 
   get_amortizacion(solicitud: any, cloud: boolean) {
-    let URL = '';
     if (cloud) {
       console.log('cloud');
-      URL = `${environment.awsURL}/amortizacion`;
+      this.URL = `${environment.awsURL}/amortizacion`;
     } else {
       console.log('server');
-      URL = `${environment.apiURL}/api/amortizacion`;
+      this.URL = `${environment.apiURL}/api/amortizacion`;
     }
-    return this.http.get(URL, {params: {
+    return this.http.get(this.URL, {params: {
         capital: solicitud.monto,
         plazo: solicitud.plazo,
         interes: solicitud.interes,
@@ -27,15 +28,14 @@ export class S1Service {
   }
 
   save_credito(data: any, cloud: boolean) {
-    let URL = '';
     if (cloud) {
       console.log('cloud');
-      URL = `${environment.awsURL}/credito`;
+      this.URL = `${environment.awsURL}/credito`;
     } else {
       console.log('server');
-      URL = `${environment.apiURL}/api/savecredito`;
+      this.URL = `${environment.apiURL}/api/savecredito`;
     }
-    return this.http.post(URL, data);
+    return this.http.post(this.URL, data);
   }
 
   /*get_query_cloud(solicitud: any) {

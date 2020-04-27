@@ -7,30 +7,30 @@ import {environment} from '../../environments/environment';
 })
 export class S2Service {
 
+  URL = '';
+
   constructor(public http: HttpClient) { }
 
   get_creditos( cloud: boolean ) {
-    let URL = '';
     if (cloud) {
       console.log('cloud');
-      URL = `${environment.awsURL}/creditos`;
+      this.URL = `${environment.awsURL}/creditos`;
     } else {
       console.log('server');
-      URL = `${environment.apiURL}/api/creditos`;
+      this.URL = `${environment.apiURL}/api/creditos`;
     }
-    return this.http.get(URL);
+    return this.http.get(this.URL);
   }
 
   pagar_cuota(payload: any, cloud: boolean) {
-    let URL = '';
     if (cloud) {
       console.log('cloud');
-      URL = `${environment.awsURL}/pagar`;
+      this.URL = `${environment.awsURL}/pagar`;
     } else {
       console.log('server');
-      URL = `${environment.apiURL}/api/pagar`;
+      this.URL = `${environment.apiURL}/api/pagar`;
     }
-    return this.http.put(URL, payload);
+    return this.http.put(this.URL, payload);
   }
 
   /*get_creditos_cloud() {
