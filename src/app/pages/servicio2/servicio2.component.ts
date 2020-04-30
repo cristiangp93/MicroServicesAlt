@@ -10,6 +10,7 @@ import {S2Service} from '../../services/s2.service';
 export class Servicio2Component implements OnInit {
 
   loading: boolean;
+  cargado: boolean;
   datos: any = [];
   selectedCredit: any = [];
   cuotas: any = [];
@@ -18,10 +19,16 @@ export class Servicio2Component implements OnInit {
   constructor(public s2: S2Service) { }
 
   ngOnInit(): void {
+    this.cargado = false;
   }
 
   get_prestamos() {
     this.loading = true;
+    Swal.fire({
+      allowOutsideClick: false,
+      text: 'Espere por favor'
+    });
+    Swal.showLoading();
     this.s2.get_creditos( this.cloudDeploy )
       .subscribe((resp: any) => {
         this.loading = false;
@@ -40,6 +47,9 @@ export class Servicio2Component implements OnInit {
           title: error.name,
           text: error.message
         });
+      }, () => {
+        Swal.close();
+        this.cargado = true;
       });
   }
 
