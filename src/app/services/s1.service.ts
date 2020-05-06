@@ -38,30 +38,4 @@ export class S1Service {
     return this.http.post(this.URL, data);
   }
 
-  /*get_query_cloud(solicitud: any) {
-    return this.http.get(`${environment.awsURL}/amortizacion`, {params: {
-        capital: solicitud.monto,
-        plazo: solicitud.plazo,
-        interes: solicitud.interes,
-        amort: solicitud.amort
-      }});
-  }
-
-  get_query_servidor( solicitud: any) {
-    return this.http.get(`${environment.apiURL}/api/amortizacion`, {params: {
-        capital: solicitud.monto,
-        plazo: solicitud.plazo,
-        interes: solicitud.interes,
-        amort: solicitud.amort
-      }});
-  }*/
-
-  /*save_credito_cloud(data: any) {
-    return this.http.post(`${environment.awsURL}/credito`, data);
-  }
-
-  save_credito_server(data: any) {
-    return this.http.post(`${environment.apiURL}/api/savecredito`, data);
-  }*/
-
 }

@@ -32,20 +32,4 @@ export class S2Service {
     }
     return this.http.put(this.URL, payload);
   }
-
-  /*get_creditos_cloud() {
-    return this.http.get(`${environment.awsURL}/creditos`);
-  }
-
-  get_creditos_server() {
-    return this.http.get(`${environment.apiURL}/api/creditos`);
-  }*/
-
-  /*pagar_cuota_cloud(payload: any) {
-    return this.http.put(`${environment.awsURL}/pagar`, payload);
-  }
-
-  pagar_cuota_server( payload: any) {
-    return this.http.put(`${environment.apiURL}/api/pagar`, payload);
-  }*/
 }
